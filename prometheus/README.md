@@ -1,0 +1,1 @@
+h install prometheus prometheus-community/prometheus --create-namespace --namespace loki -f projects/ilimit/paas/loki/prometheus/values-prometheus.yaml

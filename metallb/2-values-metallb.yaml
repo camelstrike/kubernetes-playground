@@ -1,0 +1,5 @@
+
+prometheus:
+  scrapeAnnotations: true
+  prometheusRule:
+    enabled: true

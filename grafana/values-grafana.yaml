@@ -1,0 +1,63 @@
+replicas: 1
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 60
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 60
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - grafana.local
+  tls:
+   - secretName: chart-example-tls
+     hosts:
+       - grafana.local
+
+resources:
+ limits:
+   cpu: 100m
+   memory: 128Mi
+ requests:
+   cpu: 100m
+   memory: 128Mi
+
+persistence:
+  type: pvc
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
+  inMemory:
+    enabled: true
+    sizeLimit: 300Mi
+
+datasources:
+ datasources.yaml:
+   apiVersion: 1
+   datasources:
+   - name: Prometheus
+     type: prometheus
+     url: https://prometheus.local
+     access: proxy
+     isDefault: true
+     jsonData:
+       tlsSkipVerify: true
+   - name: Loki
+     type: loki
+     url: https://loki.local
+     access: proxy
+     jsonData:
+       tlsSkipVerify: true

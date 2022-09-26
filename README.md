@@ -1,0 +1,1 @@
+curl -D- http://172.18.255.200 -H 'Host: loki.local'

@@ -1,0 +1,21 @@
+
+replicaCount: 1
+
+mountDind:
+  enabled: true
+  forceTLS: true
+  image: "docker:20.10-dind"
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: localstack.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+   - secretName: chart-example-tls
+     hosts:
+       - localstack.local

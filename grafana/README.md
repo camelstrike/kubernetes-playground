@@ -1,0 +1,1 @@
+h install grafana grafana/grafana -f projects/ilimit/paas/loki/grafana/values-grafana.yaml --create-namespace --namespace loki
