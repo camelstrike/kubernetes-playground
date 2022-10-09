@@ -1,9 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://json.schemastore.org/helmfile.json": [
-            "file:///home/gonzalo/projects/ilimit/paas/loki/values-loki-s3.yaml",
-            "file:///home/gonzalo/projects/ilimit/paas/loki/prometheus.yaml",
-            "file:///home/gonzalo/projects/ilimit/paas/loki/values-prometheus.yaml"
-        ]
-    }
-}
