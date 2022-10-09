@@ -1,1 +1,5 @@
-h install loki grafana/loki -f projects/ilimit/paas/loki/loki/values-loki.yaml --namespace loki --create-namespace
+# https://github.com/grafana/loki/tree/main/production/helm/loki
+
+helm repo add grafana https://grafana.github.io/helm-charts
+
+h install loki grafana/loki -f ./loki/values-loki.yaml --namespace loki --create-namespace

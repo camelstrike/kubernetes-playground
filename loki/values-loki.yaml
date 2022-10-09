@@ -10,10 +10,16 @@ loki:
 
   storage:
     bucketNames:
-      chunks: chunks
-      ruler: ruler
-      admin: admin
+      chunks: loki-chunks
+      ruler: loki-ruler
+      admin: loki-admin
     type: s3
+    s3:
+      endpoint: http://10.96.192.224:9000
+      accessKeyId: loki
+      secretAccessKey: loki1234
+      s3ForcePathStyle: true
+      insecure: true
 
   query_scheduler:
     max_outstanding_requests_per_tenant: 10000
@@ -60,29 +66,3 @@ gateway:
       - secretName: loki-gateway-tls
         hosts:
           - loki.local
-
-minio:
-  enabled: true
-  replicas: 1
-  # Minio requires 2 to 16 drives for erasure code (drivesPerNode * replicas)
-  # https://docs.min.io/docs/minio-erasure-code-quickstart-guide
-  # Since we only have 1 replica, that means 2 drives must be used.
-  drivesPerNode: 2
-  rootUser: enterprise-logs
-  rootPassword: supersecret
-  buckets:
-    - name: chunks
-      policy: none
-      purge: false
-    - name: ruler
-      policy: none
-      purge: false
-    - name: admin
-      policy: none
-      purge: false
-  persistence:
-    size: 5Gi
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
