@@ -18,6 +18,8 @@ persistence:
 ingress:
   enabled: true
   ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "clusterissuer"
   path: /
   hosts:
     - minio.local

@@ -1,1 +1,1 @@
-h install grafana grafana/grafana -f ./grafana/values-grafana.yaml --create-namespace --namespace grafana
+h install grafana grafana/grafana --kube-context=kind-kind --create-namespace --namespace grafana -f ./grafana/values-grafana.yaml

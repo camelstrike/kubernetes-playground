@@ -1,18 +1,16 @@
-# Cluster deployment
+# Install kind - https://kind.sigs.k8s.io/docs/user/quick-start/
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.16.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
 
 # Create cluster
 kind create cluster --config ~/kind-config.yaml --kubeconfig ~/.kube/config
 
-# Install nginx ingress
+# Extras
+- Install metrics
+- Install Monitoring CRDs
+- Install cert-manager
+- Install ingress-nginx
+
+# Install ingress nginx
 kubectl apply  --context=kind-kind --filename https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
-
-# Wait for ingress service to come up
-kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
-  --timeout=90s
-
-# Install metrics server (for HPA or VPA to work)
-helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
-helm repo update
-helm upgrade --kube-context=kind-kind --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
