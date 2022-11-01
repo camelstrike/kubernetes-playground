@@ -49,12 +49,10 @@ kubectl apply \
 #     -f ./ingress-nginx/values-ingress-nginx.yaml
 
 kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
-  --timeout=90s
-
-# ingress-nginx-controller-admission svc fix until I find a better kubectl wait for condition
-sleep 30
+    --context=kind-kind \
+    --for=condition=Ready pod \
+    --selector=app.kubernetes.io/component=controller \
+    --timeout=90s
 
 # Install MinIO
 echo "Installing MinIO"
@@ -91,3 +89,13 @@ helm upgrade --install loki grafana/loki \
     --namespace loki \
     --create-namespace \
     -f ./loki/values-loki.yaml
+
+# Install Promtail
+echo "Installing Promtail"
+helm upgrade --install promtail grafana/promtail \
+    --version 6.6.0 \
+    --kube-context=kind-kind \
+    --namespace promtail \
+    --create-namespace \
+    --set "loki.serviceName=loki" \
+    -f ./promtail/values-promtail.yaml
