@@ -27,7 +27,7 @@ loki:
     max_outstanding_requests_per_tenant: 10000
 
 write:
-  replicas: 1
+  replicas: 2
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "3100"
