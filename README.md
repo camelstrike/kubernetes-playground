@@ -44,6 +44,7 @@ Añadir hosts a /etc/hosts
     172.18.0.3 ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local localstack.local console.minio.local minio.local
 
 Borrar cluster
+
     kind delete cluster --name kind
 
 Acceder a servicios
