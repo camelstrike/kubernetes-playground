@@ -1,0 +1,31 @@
+---
+daemonset:
+  enabled: true
+
+podAnnotations:
+ prometheus.io/scrape: "true"
+ prometheus.io/port: "http-metrics"
+
+resources:
+ limits:
+   cpu: 200m
+   memory: 128Mi
+ requests:
+   cpu: 100m
+   memory: 128Mi
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+config:
+  logLevel: info
+  serverPort: 3101
+  clients:
+    - url: https://loki.local/loki/api/v1/push
+      tls_config:
+        insecure_skip_verify: true
