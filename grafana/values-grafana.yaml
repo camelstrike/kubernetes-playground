@@ -32,6 +32,9 @@ resources:
    cpu: 100m
    memory: 128Mi
 
+adminUser: admin
+adminPassword: admin
+
 persistence:
   type: pvc
   enabled: true
