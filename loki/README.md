@@ -2,7 +2,8 @@
 
 helm repo add grafana https://grafana.github.io/helm-charts
 
-h install loki grafana/loki \
+helm install loki grafana/loki \
+    --version 3.2.1 \
     --kube-context=kind-kind \
     --namespace loki \
     --create-namespace \
