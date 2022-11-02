@@ -12,6 +12,13 @@ else
     kind create cluster --config ./kind/kind-config.yaml --kubeconfig ~/.kube/config
 fi
 
+# Install Calico
+helm upgrade --install calico projectcalico/tigera-operator \
+    --version v3.24.3 \
+    --kube-context=kind-kind \
+    --namespace tigera-operator \
+    --create-namespace
+
 # Install metrics
 echo "Installing metrics"
 helm upgrade --install metrics-server metrics-server/metrics-server \
@@ -84,7 +91,7 @@ helm upgrade --install grafana grafana/grafana \
 # Install Loki
 echo "Installing Loki"
 helm upgrade --install loki grafana/loki \
-    --version 3.2.1 \
+    --version 3.3.1 \
     --kube-context=kind-kind \
     --namespace loki \
     --create-namespace \
