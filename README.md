@@ -22,6 +22,8 @@ TODO:
 - Tweak services
 - Añadir network policies
 - Implementar kind en Gitlab Pipeline
+- Aplicar resource limits/claims a pods que falten
+- Utilizar imagenes del registry interno (harbor), para ser compatible con kyverno policies
 
 # Requisitos:
 
