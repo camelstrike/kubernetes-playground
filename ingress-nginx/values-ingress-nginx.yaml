@@ -26,6 +26,11 @@ controller:
           - type: Pods
             value: 2
             periodSeconds: 60
+  hostPort:
+    enabled: true
+    ports:
+      http: 80
+      https: 443
   service:
     type: NodePort
     nodePorts:
