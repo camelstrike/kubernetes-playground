@@ -37,14 +37,13 @@ TODO:
 - Helm
 - Helm repos
                              
-        for repo_name repo_url in (ingress-nginx https://kubernetes.github.io/ingress-nginx
-        jetstack                        https://charts.jetstack.io
-        metallb                         https://metallb.github.io/metallb
-        grafana                         https://grafana.github.io/helm-charts
-        prometheus-community            https://prometheus-community.github.io/helm-charts
-        metrics-server                  https://kubernetes-sigs.github.io/metrics-server/
-        minio                           https://charts.min.io/
-        projectcalico                   https://projectcalico.docs.tigera.io/charts
+        helm repo add jetstack https://charts.jetstack.io
+        helm repo add metallb https://metallb.github.io/metallb
+        helm repo add grafana https://grafana.github.io/helm-charts
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+        helm repo add minio https://charts.min.io/
+        helm repo add projectcalico https://projectcalico.docs.tigera.io/charts
 
 # Uso
 
