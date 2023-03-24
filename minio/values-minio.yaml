@@ -1,32 +1,19 @@
 ---
-additionalAnnotations:
-  prometheus.io/scrape: "true"
-
 mode: distributed
 
 rootUser: "root"
 rootPassword: "root1234"
 
-drivesPerNode: 2
-replicas: 1
+drivesPerNode: 1
+replicas: 3
 pools: 1
 
 persistence:
   enabled: true
-  size: 5Gi
-
-ingress:
-  enabled: true
-  ingressClassName: "nginx"
-  annotations:
-    cert-manager.io/cluster-issuer: "clusterissuer"
-  path: /
-  hosts:
-    - minio.local
-  tls:
-   - secretName: chart-example-tls
-     hosts:
-       - minio.local
+  storageClass: ""
+  VolumeName: ""
+  accessMode: ReadWriteOnce
+  size: 10Gi
 
 consoleIngress:
   enabled: true
@@ -86,3 +73,7 @@ buckets:
 metrics:
   serviceMonitor:
     enabled: true
+    includeNode: true
+    public: true
+    additionalLabels:
+      release: kube-prometheus-stack

@@ -1,0 +1,30 @@
+controllerManager:
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Equal
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/control-plane
+      operator: Equal
+      effect: NoSchedule
+
+chaosDaemon:
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Equal
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/control-plane
+      operator: Equal
+      effect: NoSchedule
+  runtime: containerd
+  socketPath: /run/containerd/containerd.sock
+
+dashboard:
+  securityMode: false
+  ingress:
+      enabled: true
+      certManager: true
+      hosts:
+        - name: chaos-mesh.local
+          tls: true
+          tlsSecret: chaos-mesh.local-tls
+      ingressClassName: nginx

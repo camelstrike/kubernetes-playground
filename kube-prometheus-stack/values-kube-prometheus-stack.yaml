@@ -1,0 +1,70 @@
+---
+grafana:
+  enabled: true
+  defaultDashboardsTimezone: utc
+  adminPassword: prom-operator
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "clusterissuer"
+    hosts:
+      - grafana.local
+    path: /
+    tls:
+    - secretName: grafana-general-tls
+      hosts:
+      - grafana.local
+  additionalDataSources:
+   - name: Loki
+     type: loki
+     url: http://loki-gateway.loki.svc
+     access: proxy
+     jsonData:
+       tlsSkipVerify: true
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: provider-site
+        orgId: 1
+        folder: 'Extras'
+        type: file
+        disableDeletion: false
+        editable: true
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/provider-site
+  dashboards:
+    provider-site:
+      nginx-ingress-controller:
+        url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/grafana/dashboards/nginx.json
+        # gnetId: 9614
+        revision: 1
+        datasource: Prometheus
+      nginx-ingress-req-handling-perf:
+        url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/grafana/dashboards/request-handling-performance.json
+        revision: 1
+        datasource: Prometheus
+      minio-dashboard:
+        url: https://raw.githubusercontent.com/minio/minio/master/docs/metrics/prometheus/grafana/minio-replication.json
+        revision: 1
+        datasource: Prometheus
+  plugins:
+    - chaosmeshorg-datasource
+
+
+prometheus:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "clusterissuer"
+    hosts:
+      - prometheus.local
+    path: /
+    tls:
+    - secretName: prometheus-general-tls
+      hosts:
+      - prometheus.local

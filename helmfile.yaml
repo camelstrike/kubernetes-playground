@@ -1,0 +1,166 @@
+---
+helmDefaults:
+  kubeContext: kind-kind
+
+repositories:
+  - name: projectcalico
+    url: https://projectcalico.docs.tigera.io/charts
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: minio
+    url: https://charts.min.io
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: chaos-mesh
+    url: https://charts.chaos-mesh.org
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+templates:
+  default: &default
+    missingFileHandler: Error
+    disableValidationOnInstall: true
+    cleanupOnFail: false
+    values:
+    - ./{{`{{ .Release.Name }}`}}/values-{{`{{ .Release.Name }}`}}.yaml
+
+releases:
+# calico
+  - name: calico
+    namespace: tigera-operator
+    chart: projectcalico/tigera-operator
+    version: v3.25.0
+    wait: true
+    waitForJobs: true
+    hooks:
+      - events: ['presync', 'preapply']
+        command: ./CRDs/install-crds.sh
+      - events: ['postsync']
+        showlogs: true
+        command: "/bin/sh"
+        args:
+          - "-ec"
+          - |-
+            kubectl wait --for=condition=Ready node/kind-control-plane --timeout=300s
+            kubectl wait --for=condition=Ready node/kind-worker --timeout=300s
+            kubectl wait --for=condition=Ready node/kind-worker2 --timeout=300s
+    <<: *default
+# metrics-server
+  - name: metrics-server
+    namespace: kube-system
+    chart: metrics-server/metrics-server
+    version: 3.8.4
+    wait: true
+    waitForJobs: true
+    set:
+    - name: args
+      values:
+        - "--kubelet-insecure-tls"
+    needs:
+      - tigera-operator/calico
+    <<: *default
+# cert-manager
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.11.0
+    wait: true
+    waitForJobs: true
+    needs:
+      - tigera-operator/calico
+    <<: *default
+# ingress-nginx
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+    version: 4.5.2
+    hooks:
+      - events: ['postsync']
+        showlogs: true
+        command: "/bin/sh"
+        args:
+          - "-ec"
+          - "kubectl wait --namespace {{`{{ .Release.Namespace }}`}} --for=condition=Ready pod --selector=app.kubernetes.io/component=controller --timeout=300s"
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+    <<: *default
+# kube-prometheus-stack
+  - name: kube-prometheus-stack
+    namespace: kube-prometheus-stack
+    chart: prometheus-community/kube-prometheus-stack
+    version: 45.7.1
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+    <<: *default
+# minio
+  - name: minio
+    namespace: minio
+    chart: minio/minio
+    version: 5.0.7
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+      - kube-prometheus-stack/kube-prometheus-stack
+    <<: *default
+# loki
+  - name: loki
+    namespace: loki
+    chart: grafana/loki
+    version: 4.8.0
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+      - minio/minio
+      - kube-prometheus-stack/kube-prometheus-stack
+    <<: *default
+# promtail
+  - name: promtail
+    namespace: promtail
+    chart: grafana/promtail
+    version: 6.9.3
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+      - loki/loki
+      - kube-prometheus-stack/kube-prometheus-stack
+    <<: *default
+# chaos-mesh
+  - name: chaos-mesh
+    namespace: chaos-mesh
+    chart: chaos-mesh/chaos-mesh
+    version: 2.5.1
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+    <<: *default
+# ArgoCD
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: 5.24.0
+    needs:
+      - tigera-operator/calico
+      - kube-system/metrics-server
+      - cert-manager/cert-manager
+      - ingress-nginx/ingress-nginx
+    <<: *default
+

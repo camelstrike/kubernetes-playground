@@ -1,0 +1,116 @@
+redis-ha:
+  enabled: true
+  exporter:
+    enabled: false
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Equal"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      effect: "NoSchedule"
+
+controller:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+    rules:
+      enabled: true
+      spec:
+        - alert: ArgoAppMissing
+          expr: |
+            absent(argocd_app_info) == 1
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "[Argo CD] No reported applications"
+            description: >
+              Argo CD has not reported any applications data for the past 15 minutes which
+              means that it must be down or not functioning properly.  This needs to be
+              resolved for this cloud to continue to maintain state.
+        - alert: ArgoAppNotSynced
+          expr: |
+            argocd_app_info{sync_status!="Synced"} == 1
+          for: 12h
+          labels:
+            severity: warning
+          annotations:
+            summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+            description: >
+              The application [{{`{{$labels.name}}`}} has not been synchronized for over
+              12 hours which means that the state of this cloud has drifted away from the
+              state inside Git.
+
+server:
+  replicas: 2
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "clusterissuer"
+    hosts:
+      - argocd.local
+    paths:
+      - /
+    pathType: Prefix
+    tls:
+      - secretName: argocd-secret
+        hosts:
+          - argocd.local
+
+repoServer:
+  replicas: 2
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+
+applicationSet:
+  replicaCount: 2
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+  webhook:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: "clusterissuer"
+      hosts:
+        - argocd-webhook.local
+      paths:
+        - /api/webhook
+      pathType: Prefix
+      tls:
+        - secretName: argocd-secret
+          hosts:
+            - argocd-webhook.local
+    
+notifications:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+
+configs:
+  params:
+    server.insecure: true
+

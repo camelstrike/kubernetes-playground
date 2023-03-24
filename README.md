@@ -1,36 +1,29 @@
-Este proyecto se puede utilizar para hacer pruebas locales en K8s
+Easily set up a K8S cluster locally using helm charts with observability tools ready to go!
 
-Instala y configura:
-- kind
+This project will install/configure:
 - calico
 - metrics-server
 - monitoring CRDs
-  - monitoring.coreos.com_probes
-  - monitoring.coreos.com_servicemonitors
-  - monitoring.coreos.com_prometheusrules
 - cert-manager
 - ingress-nginx
 - minio
-- prometheus
-- grafana
+- kube-prometheus-stack
 - loki
 - promtail
 
 TODO:
-- Instalar ingress-nginx via helm
 - Instalar metallb para hacer pruebas con loadbalancer
 - Tweak services
 - Añadir network policies
-- Implementar kind en Gitlab Pipeline
+- Implementar kind en Github Pipeline
 - Aplicar resource limits/claims a pods que falten
-- Utilizar imagenes del registry interno (harbor), para ser compatible con kyverno policies
 
 # Requisitos:
 
 - [kind](https://kind.sigs.k8s.io/)
 
         # Install kind - https://kind.sigs.k8s.io/docs/user/quick-start/
-        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.16.0/kind-linux-amd64
+        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
         chmod +x ./kind
         sudo mv ./kind /usr/local/bin/kind
 - Docker
@@ -38,7 +31,6 @@ TODO:
 - Helm repos
                              
         helm repo add jetstack https://charts.jetstack.io
-        helm repo add metallb https://metallb.github.io/metallb
         helm repo add grafana https://grafana.github.io/helm-charts
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
         helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
@@ -53,26 +45,26 @@ Inicializar cluster ejecutando cluster-provision.sh script
 
 Añadir hosts a /etc/hosts
 
-    CONTROL_PLANE_DOCKER_IP ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local localstack.local console.minio.local minio.local
+    CONTROL_PLANE_DOCKER_IP ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local
 
-    Ejemplo:
-    172.18.0.3 ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local localstack.local console.minio.local minio.local
+    Example:
+    172.18.0.3 ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local
 
-Borrar cluster
+Delete cluster
 
     kind delete cluster --name kind
 
-Pausar/Reanudar cluster
+Pause/Resume cluster
 
-        # Pausar
+        # Pause
         for node in kind-control-plane kind-worker kind-worker2; do docker pause $node;done
 
-        # Reanudar
+        # Resume
         for node in kind-control-plane kind-worker kind-worker2; do docker unpause $node;done
 
-Acceder a servicios
-- https://grafana.local - admin/admin
-- https://console.minio.local - loki/loki1234
+Access services:
+- https://grafana.local - admin/prom-operator
+- https://console.minio.local - loki/loki1234 or admin/admin123
 - https://prometheus.local
 - https://alertmanager.local
 - https://pushgateway.local

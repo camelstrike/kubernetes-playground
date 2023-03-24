@@ -15,7 +15,7 @@ loki:
       admin: loki-admin
     type: s3
     s3:
-      endpoint: https://minio.local
+      endpoint: http://minio.minio.svc:9000
       accessKeyId: loki
       secretAccessKey: loki1234
       s3ForcePathStyle: true
@@ -28,9 +28,6 @@ loki:
 
 write:
   replicas: 2
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
   resources:
     limits:
       cpu: 100m
@@ -41,11 +38,6 @@ write:
 
 read:
   replicas: 1
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 3
-    targetCPUUtilizationPercentage: 60
   resources:
     limits:
       cpu: 100m
@@ -53,19 +45,15 @@ read:
     requests:
       cpu: 100m
       memory: 128Mi
-
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 60
 
 gateway:
   enabled: true
   replicas: 1
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 3
-    targetCPUUtilizationPercentage: 60
   resources:
     limits:
       cpu: 100m
@@ -73,6 +61,11 @@ gateway:
     requests:
       cpu: 100m
       memory: 50Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 60
 
   ingress:
     enabled: true
@@ -88,3 +81,42 @@ gateway:
       - secretName: loki-gateway-tls
         hosts:
           - loki.local
+
+monitoring:
+  dashboards:
+    enabled: true
+    namespace: kube-prometheus-stack
+    labels:
+      grafana_dashboard: '1'
+  rules:
+    enabled: true
+    alerting: true
+    labels:
+      release: kube-prometheus-stack
+    additionalGroups:
+    - name: additional-loki-rules
+      rules:
+        - record: job:loki_request_duration_seconds_bucket:sum_rate
+          expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job)
+        - record: job_route:loki_request_duration_seconds_bucket:sum_rate
+          expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job, route)
+        - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+          expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
+  alerts:
+    enabled: true
+    namespace: kube-prometheus-stack
+    labels:
+      release: kube-prometheus-stack
+  serviceMonitor:
+    enabled: true
+    namespace: kube-prometheus-stack
+    namespaceSelector:
+      matchNames:
+        - loki
+    labels:
+      release: kube-prometheus-stack
+
+  selfMonitoring:
+    enabled: true
+    lokiCanary:
+      enabled: true
