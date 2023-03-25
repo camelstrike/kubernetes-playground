@@ -1,5 +1,5 @@
 redis-ha:
-  enabled: true
+  enabled: false
   exporter:
     enabled: false
   tolerations:
