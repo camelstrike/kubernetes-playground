@@ -1,0 +1,118 @@
+---
+projects:
+  - name: kubernetes-playground-project
+    namespace: argocd
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+    destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+    sourceRepos:
+    - git@github.com:camelstrike/kubernetes-playground.git
+    - https://prometheus-community.github.io/helm-charts
+    - https://charts.min.io
+    - https://grafana.github.io/helm-charts
+    - https://charts.chaos-mesh.org
+
+applications:
+# Kube Prometheus Stack
+  - name: kube-prometheus-stack
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: kube-prometheus-stack
+    syncPolicy:
+      syncOptions:
+      # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
+      - ServerSideApply=true
+    sources:
+    - repoURL: 'https://prometheus-community.github.io/helm-charts'
+      chart: kube-prometheus-stack
+      targetRevision: 45.7.1
+      helm:
+        valueFiles:
+        - $values/kube-prometheus-stack/values-kube-prometheus-stack.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values
+    info:
+    - name: Grafana
+      value: https://grafana.local/
+    - name: Prometheus
+      value: https://prometheus.local/
+# Minio
+  - name: minio
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: minio
+    sources:
+    - repoURL: 'https://charts.min.io'
+      chart: minio
+      targetRevision: 5.0.7
+      helm:
+        valueFiles:
+        - $values/minio/values-minio.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values
+    info:
+    - name: "Minio Console"
+      value: https://minio.local/
+# Loki
+  - name: loki
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: loki
+    sources:
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: loki
+      targetRevision: 4.8.0
+      helm:
+        valueFiles:
+        - $values/loki/values-loki.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values
+# Promtail
+  - name: promtail
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: promtail
+    sources:
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: promtail
+      targetRevision: 6.9.3
+      helm:
+        valueFiles:
+        - $values/promtail/values-promtail.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values
+# Chaos Mesh
+  - name: chaos-mesh
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: chaos-mesh
+    syncPolicy:
+      syncOptions:
+      - ServerSideApply=true
+    sources:
+    - repoURL: 'https://charts.chaos-mesh.org'
+      chart: chaos-mesh
+      targetRevision: 2.5.1
+      helm:
+        valueFiles:
+        - $values/chaos-mesh/values-chaos-mesh.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values

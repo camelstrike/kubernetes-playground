@@ -50,6 +50,8 @@ read:
     minReplicas: 1
     maxReplicas: 3
     targetCPUUtilizationPercentage: 60
+  persistence:
+    enableStatefulSetAutoDeletePVC: false
 
 gateway:
   enabled: true

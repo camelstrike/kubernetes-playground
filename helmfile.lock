@@ -3,6 +3,9 @@ dependencies:
 - name: argo-cd
   repository: https://argoproj.github.io/argo-helm
   version: 5.24.0
+- name: argocd-apps
+  repository: https://argoproj.github.io/argo-helm
+  version: 0.0.9
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.11.0
@@ -30,5 +33,5 @@ dependencies:
 - name: tigera-operator
   repository: https://projectcalico.docs.tigera.io/charts
   version: v3.25.0
-digest: sha256:5494c2e93cde31dad592a08d29a913ceaf9a5a55c54799c291280471dc9f36a6
-generated: "2023-03-24T19:54:55.5726577+01:00"
+digest: sha256:553b019af18a8454e591325c4942ff18e0eaeea9907d764ca39044a495627140
+generated: "2023-03-26T09:05:50.9160803+02:00"

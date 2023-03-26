@@ -113,4 +113,23 @@ notifications:
 configs:
   params:
     server.insecure: true
+  credentialTemplates:
+      ssh-creds:
+       url: git@github.com:camelstrike
+       sshPrivateKey: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+          QyNTUxOQAAACAmtq101UJXY1twcK7ynsMU3yhbeezLJ3QYS9vbpBmFuQAAAJjPIHQSzyB0
+          EgAAAAtzc2gtZWQyNTUxOQAAACAmtq101UJXY1twcK7ynsMU3yhbeezLJ3QYS9vbpBmFuQ
+          AAAEA3QtE9ho7GBsta3XAtybMmNG9AWKxX2eiPlQYgTOTT/Ca2rXTVQldjW3BwrvKewxTf
+          KFt57MsndBhL29ukGYW5AAAAEmdvbnphbG9AbmItY2hhbmNobwECAw==
+          -----END OPENSSH PRIVATE KEY-----
+  repositories:
+    promtail-helm-repo:
+      url: https://grafana.github.io/helm-charts
+      name: promtail
+      type: helm
+    private-repo:
+      url: git@github.com:camelstrike/kubernetes-playground.git
+      name: kubernetes-playground
 

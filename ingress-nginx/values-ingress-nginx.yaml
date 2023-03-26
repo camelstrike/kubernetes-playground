@@ -3,13 +3,6 @@ controller:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-  resources:
-    limits:
-      cpu: 100m
-      memory: 90Mi
-    requests:
-      cpu: 100m
-      memory: 90Mi
   hostPort:
     enabled: true
   service:
@@ -27,6 +20,8 @@ controller:
     enabled: false
   extraArgs:
     publish-status-address: localhost
+  admissionWebhooks:
+      timeoutSeconds: 30
   metrics:
     port: 10254
     enabled: true
