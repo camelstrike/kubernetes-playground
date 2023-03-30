@@ -42,6 +42,23 @@ applications:
       value: https://grafana.local/
     - name: Prometheus
       value: https://prometheus.local/
+# Prometheus-Adapter
+  - name: prometheus-adapter
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: prometheus-adapter
+    sources:
+    - repoURL: 'https://prometheus-community.github.io/helm-charts'
+      chart: prometheus-adapter
+      targetRevision: 4.1.1
+      helm:
+        valueFiles:
+        - $values/prometheus-adapter/values-prometheus-adapter.yaml
+    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+      targetRevision: HEAD
+      ref: values
 # Minio
   - name: minio
     namespace: argocd
