@@ -92,66 +92,6 @@ releases:
       - kube-system/metrics-server
       - cert-manager/cert-manager
     <<: *default
-# # kube-prometheus-stack
-#   - name: kube-prometheus-stack
-#     namespace: kube-prometheus-stack
-#     chart: prometheus-community/kube-prometheus-stack
-#     version: 45.7.1
-#     needs:
-#       - tigera-operator/calico
-#       - kube-system/metrics-server
-#       - cert-manager/cert-manager
-#       - ingress-nginx/ingress-nginx
-#     <<: *default
-# # minio
-#   - name: minio
-#     namespace: minio
-#     chart: minio/minio
-#     version: 5.0.7
-#     needs:
-#       - tigera-operator/calico
-#       - kube-system/metrics-server
-#       - cert-manager/cert-manager
-#       - ingress-nginx/ingress-nginx
-#       - kube-prometheus-stack/kube-prometheus-stack
-#     <<: *default
-# # loki
-#   - name: loki
-#     namespace: loki
-#     chart: grafana/loki
-#     version: 4.8.0
-#     needs:
-#       - tigera-operator/calico
-#       - kube-system/metrics-server
-#       - cert-manager/cert-manager
-#       - ingress-nginx/ingress-nginx
-#       - minio/minio
-#       - kube-prometheus-stack/kube-prometheus-stack
-#     <<: *default
-# # promtail
-#   - name: promtail
-#     namespace: promtail
-#     chart: grafana/promtail
-#     version: 6.9.3
-#     needs:
-#       - tigera-operator/calico
-#       - kube-system/metrics-server
-#       - cert-manager/cert-manager
-#       - ingress-nginx/ingress-nginx
-#       - loki/loki
-#       - kube-prometheus-stack/kube-prometheus-stack
-#     <<: *default
-# # chaos-mesh
-#   - name: chaos-mesh
-#     namespace: chaos-mesh
-#     chart: chaos-mesh/chaos-mesh
-#     version: 2.5.1
-#     needs:
-#       - tigera-operator/calico
-#       - kube-system/metrics-server
-#       - cert-manager/cert-manager
-#       - ingress-nginx/ingress-nginx
-#     <<: *default
 # ArgoCD
   - name: argocd
     namespace: argocd
@@ -173,5 +113,6 @@ releases:
       - kube-system/metrics-server
       - cert-manager/cert-manager
       - ingress-nginx/ingress-nginx
+      - argocd/argocd
     <<: *default
 
