@@ -27,6 +27,7 @@ applications:
       syncOptions:
       # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
       - ServerSideApply=true
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://prometheus-community.github.io/helm-charts'
       chart: kube-prometheus-stack
@@ -49,6 +50,9 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: prometheus-adapter
+    syncPolicy:
+      syncOptions:
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://prometheus-community.github.io/helm-charts'
       chart: prometheus-adapter
@@ -66,6 +70,9 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: minio
+    syncPolicy:
+      syncOptions:
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://charts.min.io'
       chart: minio
@@ -86,6 +93,9 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: loki
+    syncPolicy:
+      syncOptions:
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://grafana.github.io/helm-charts'
       chart: loki
@@ -103,6 +113,9 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: promtail
+    syncPolicy:
+      syncOptions:
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://grafana.github.io/helm-charts'
       chart: promtail
@@ -123,6 +136,7 @@ applications:
     syncPolicy:
       syncOptions:
       - ServerSideApply=true
+      - CreateNamespace=true
     sources:
     - repoURL: 'https://charts.chaos-mesh.org'
       chart: chaos-mesh
