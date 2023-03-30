@@ -48,7 +48,7 @@ Añadir hosts a /etc/hosts
     CONTROL_PLANE_DOCKER_IP ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local
 
     Example:
-    172.18.0.3 ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local
+    172.18.0.3 ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local argocd.local chaos-mesh.local
 
 Delete cluster
 
