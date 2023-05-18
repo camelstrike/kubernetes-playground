@@ -9,7 +9,7 @@ if [[ $(kind get clusters) == "kind" ]]
         echo "Cluster kind exists already"
 else
     echo "Cluster doesnt exist, creating..."
-    kind create cluster --config "$PWD"/kind/kind-config.yaml --kubeconfig ~/.kube/config
+    kind create cluster --config "${PWD}"/kind/kind-config.yaml --kubeconfig ~/.kube/config
 fi
 
 # Create namespaces
@@ -23,7 +23,7 @@ loki
 promtail
 )
 
-for namespace in "${NAMESPACES[@]}"; do kubectl create ns "$namespace"; done
+for namespace in "${NAMESPACES[@]}"; do kubectl create ns "${namespace}"; done
 
 # Install Calico
 helm upgrade --install calico projectcalico/tigera-operator \
@@ -41,15 +41,15 @@ kubectl wait --context=kind-kind --for=condition=Ready node/kind-worker2 --timeo
 # # Install Monitoring CRDs
 echo "Installing CRDs"
 COREOS_MON_CRDS_VERSION="v0.63.0"
-COREOS_MON_CRDS="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/$COREOS_MON_CRDS_VERSION/example/prometheus-operator-crd"
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_alertmanagerconfigs.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_alertmanagers.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_podmonitors.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_probes.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_prometheuses.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_prometheusrules.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_servicemonitors.yaml
-kubectl apply --server-side -f "$COREOS_MON_CRDS"/monitoring.coreos.com_thanosrulers.yaml
+COREOS_MON_CRDS="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${COREOS_MON_CRDS_VERSION}/example/prometheus-operator-crd"
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_alertmanagerconfigs.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_alertmanagers.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_podmonitors.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_probes.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_prometheuses.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_prometheusrules.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_servicemonitors.yaml
+kubectl apply --server-side -f "${COREOS_MON_CRDS}"/monitoring.coreos.com_thanosrulers.yaml
 
 # Install metrics
 echo "Installing metrics"
