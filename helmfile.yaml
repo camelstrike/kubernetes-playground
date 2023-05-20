@@ -40,13 +40,13 @@ releases:
     chart: projectcalico/tigera-operator
     version: v3.25.0
     hooks:
-      - events: ['presync', 'preapply']
+      - events: [presync, preapply]
         command: ./CRDs/install-crds.sh
-      - events: ['postsync']
+      - events: [postsync]
         showlogs: true
-        command: "/bin/sh"
+        command: /bin/sh
         args:
-          - "-ec"
+          - -ec
           - |-
             kubectl wait --for=condition=Ready node/kind-control-plane --timeout=300s
             kubectl wait --for=condition=Ready node/kind-worker --timeout=300s
@@ -60,7 +60,7 @@ releases:
     set:
     - name: args
       values:
-        - "--kubelet-insecure-tls"
+        - --kubelet-insecure-tls
     needs:
       - tigera-operator/calico
     <<: *default
@@ -78,11 +78,11 @@ releases:
     chart: ingress-nginx/ingress-nginx
     version: 4.5.2
     hooks:
-      - events: ['postsync']
+      - events: [postsync]
         showlogs: true
-        command: "/bin/sh"
+        command: /bin/sh
         args:
-          - "-ec"
+          - -ec
           - "kubectl wait --namespace {{`{{ .Release.Namespace }}`}} --for=condition=Ready pod --selector=app.kubernetes.io/component=controller --timeout=300s"
     needs:
       - tigera-operator/calico

@@ -9,7 +9,7 @@ if [[ $(kind get clusters) == "kind" ]]
         echo "Cluster kind exists already"
 else
     echo "Cluster doesnt exist, creating..."
-    kind create cluster --config "$PWD"/kind/kind-config.yaml --kubeconfig ~/.kube/config
+    kind create cluster --config "${PWD}"/kind/kind-config.yaml --kubeconfig ~/.kube/config
 fi
 
 helmfile apply

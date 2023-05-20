@@ -11,11 +11,11 @@ metadata:
   name: role-cluster-manager-hwuug
 rules:
 - apiGroups: [""]
-  resources: ["pods", "namespaces"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: ["chaos-mesh.org"]
+  resources: [pods, namespaces]
+  verbs: [get, watch, list]
+- apiGroups: [chaos-mesh.org]
   resources: [ "*" ]
-  verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
+  verbs: [get, list, watch, create, delete, patch, update]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
