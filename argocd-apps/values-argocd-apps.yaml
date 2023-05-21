@@ -93,6 +93,23 @@ applications:
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values
+  # ArgoCD
+  - name: argocd
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: argocd
+    sources:
+      - repoURL: https://argoproj.github.io/argo-helm
+        chart: argocd
+        targetRevision: 5.31.1
+        helm:
+          valueFiles:
+            - $values/argocd/values-argocd.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
   # Kube Prometheus Stack
   - name: kube-prometheus-stack
     namespace: argocd
