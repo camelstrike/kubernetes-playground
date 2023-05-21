@@ -2,7 +2,7 @@ version: 0.151.0
 dependencies:
 - name: argo-cd
   repository: https://argoproj.github.io/argo-helm
-  version: 5.31.1
+  version: 5.34.1
 - name: argocd-apps
   repository: https://argoproj.github.io/argo-helm
   version: 1.2.0
@@ -18,5 +18,5 @@ dependencies:
 - name: tigera-operator
   repository: https://projectcalico.docs.tigera.io/charts
   version: v3.25.1
-digest: sha256:f7abe9c188a96889bfd4671fdf6b62b348a943a5e0345ed1418d6a64de3a829a
-generated: "2023-05-21T18:51:14.031197503+02:00"
+digest: sha256:15e4a9a630eddf64ed2d4dbc15c8c8f7a7f49435731a9c2e7dbb7917524c9ffb
+generated: "2023-05-21T19:03:51.06017225+02:00"
