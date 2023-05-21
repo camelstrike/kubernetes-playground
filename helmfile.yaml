@@ -104,7 +104,7 @@ releases:
   - name: argocd-apps
     namespace: argocd
     chart: argo/argocd-apps
-    version: 0.0.9
+    version: 1.2.0
     needs:
       - tigera-operator/calico
       - kube-system/metrics-server
