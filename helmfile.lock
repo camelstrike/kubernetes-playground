@@ -8,7 +8,7 @@ dependencies:
   version: 0.0.9
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v1.11.0
+  version: v1.12.0
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
   version: 4.5.2
@@ -18,5 +18,5 @@ dependencies:
 - name: tigera-operator
   repository: https://projectcalico.docs.tigera.io/charts
   version: v3.25.1
-digest: sha256:479fe99ab7c5450bc066e018a2d0188fe0ee69191ed663e51e0d7bc6a7fc5522
-generated: "2023-05-21T17:10:29.654374224+02:00"
+digest: sha256:274e9ac2768afb62878c9dc2a261d5d2d8c1efca05496edb140698603ccfc8a8
+generated: "2023-05-21T17:55:31.874395834+02:00"
