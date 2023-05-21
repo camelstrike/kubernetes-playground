@@ -2,8 +2,8 @@
 
 set -u
 
-COREOS_MON_CRDS_VERSION="v0.63.0"
-GRAFANA_MON_CRDS_VERSION="v0.32.1"
+COREOS_MON_CRDS_VERSION="v0.65.1"
+GRAFANA_MON_CRDS_VERSION="v0.33.2"
 
 COREOS_MON_CRDS_URL="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${COREOS_MON_CRDS_VERSION}/example/prometheus-operator-crd"
 GRAFANA_MON_CRDS_URL="https://raw.githubusercontent.com/grafana/agent/${GRAFANA_MON_CRDS_VERSION}/production/operator/crds"
