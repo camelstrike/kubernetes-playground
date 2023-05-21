@@ -16,6 +16,23 @@ projects:
       - https://charts.chaos-mesh.org
 
 applications:
+  # Calico
+  - name: calico
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: tigera-operator
+    sources:
+      - repoURL: https://projectcalico.docs.tigera.io/charts
+        chart: tigera-operator
+        targetRevision: v3.25.1
+        helm:
+          valueFiles:
+            - $values/calico/values-calico.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
   # Kube Prometheus Stack
   - name: kube-prometheus-stack
     namespace: argocd

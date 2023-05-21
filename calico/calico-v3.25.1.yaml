@@ -23,10 +23,10 @@ resources: {}
 
 # Tolerations for the tigera/operator pod.
 tolerations:
-  - effect: NoExecute
-    operator: Exists
-  - effect: NoSchedule
-    operator: Exists
+- effect: NoExecute
+  operator: Exists
+- effect: NoSchedule
+  operator: Exists
 
 # NodeSelector for the tigera/operator pod.
 nodeSelector:
@@ -41,8 +41,9 @@ podLabels: {}
 # Image and registry configuration for the tigera/operator pod.
 tigeraOperator:
   image: tigera/operator
-  version: v1.29.0
+  version: v1.29.3
   registry: quay.io
 calicoctl:
   image: docker.io/calico/ctl
-  tag: v3.25.0
+  tag: v3.25.1
+
