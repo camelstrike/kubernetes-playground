@@ -54,7 +54,8 @@ installCRDs: false
 
 replicaCount: 1
 
-strategy: {}
+strategy:
+  {}
   # type: RollingUpdate
   # rollingUpdate:
   #   maxSurge: 0
@@ -109,7 +110,8 @@ serviceAccount:
 
 # Additional command line flags to pass to cert-manager controller binary.
 # To see all available flags run docker run quay.io/jetstack/cert-manager-controller:<version> --help
-extraArgs: []
+extraArgs:
+  []
   # When this flag is enabled, secrets will be automatically removed when the certificate resource is deleted
   # - --enable-certificate-owner-ref=true
   # Use this flag to enable or disable arbitrary controllers, for example, disable the CertificiateRequests approver
@@ -119,7 +121,8 @@ extraEnv: []
 # - name: SOME_VAR
 #   value: 'some value'
 
-resources: {}
+resources:
+  {}
   # requests:
   #   cpu: 10m
   #   memory: 32Mi
@@ -137,10 +140,9 @@ containerSecurityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
-    - ALL
+      - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-
 
 volumes: []
 
@@ -174,7 +176,8 @@ podLabels: {}
 nodeSelector:
   kubernetes.io/os: linux
 
-ingressShim: {}
+ingressShim:
+  {}
   # defaultIssuerName: ""
   # defaultIssuerKind: ""
   # defaultIssuerGroup: ""
@@ -252,7 +255,8 @@ webhook:
     # the apiVersion of WebhookConfiguration past v1alpha1.
     # securePort: 10250
 
-  strategy: {}
+  strategy:
+    {}
     # type: RollingUpdate
     # rollingUpdate:
     #   maxSurge: 0
@@ -271,7 +275,7 @@ webhook:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
 
@@ -296,7 +300,8 @@ webhook:
   # Path to a file containing a WebhookConfiguration object used to configure the webhook
   # - --config=<path-to-config-file>
 
-  resources: {}
+  resources:
+    {}
     # requests:
     #   cpu: 10m
     #   memory: 32Mi
@@ -389,35 +394,37 @@ webhook:
 
   # Overrides the mutating webhook and validating webhook so they reach the webhook
   # service using the `url` field instead of a service.
-  url: {}
+  url:
+    {}
     # host:
 
   # Enables default network policies for webhooks.
   networkPolicy:
     enabled: false
     ingress:
-    - from:
-      - ipBlock:
-          cidr: 0.0.0.0/0
+      - from:
+          - ipBlock:
+              cidr: 0.0.0.0/0
     egress:
-    - ports:
-      - port: 80
-        protocol: TCP
-      - port: 443
-        protocol: TCP
-      - port: 53
-        protocol: TCP
-      - port: 53
-        protocol: UDP
-      to:
-      - ipBlock:
-          cidr: 0.0.0.0/0
+      - ports:
+          - port: 80
+            protocol: TCP
+          - port: 443
+            protocol: TCP
+          - port: 53
+            protocol: TCP
+          - port: 53
+            protocol: UDP
+        to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
 
 cainjector:
   enabled: true
   replicaCount: 1
 
-  strategy: {}
+  strategy:
+    {}
     # type: RollingUpdate
     # rollingUpdate:
     #   maxSurge: 0
@@ -436,10 +443,9 @@ cainjector:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
-
 
   # Optional additional annotations to add to the cainjector Deployment
   # deploymentAnnotations: {}
@@ -453,7 +459,8 @@ cainjector:
   # Enable profiling for cainjector
   # - --enable-profiling=true
 
-  resources: {}
+  resources:
+    {}
     # requests:
     #   cpu: 10m
     #   memory: 32Mi
@@ -538,7 +545,7 @@ startupapicheck:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
 
@@ -561,7 +568,8 @@ startupapicheck:
   # To see all available flags run docker run quay.io/jetstack/cert-manager-ctl:<version> --help
   extraArgs: []
 
-  resources: {}
+  resources:
+    {}
     # requests:
     #   cpu: 10m
     #   memory: 32Mi
@@ -617,4 +625,3 @@ startupapicheck:
 
     # Optional additional labels to add to the startupapicheck's ServiceAccount
     # labels: {}
-

@@ -101,7 +101,7 @@ applicationSet:
         - secretName: argocd-secret
           hosts:
             - argocd-webhook.local
-    
+
 notifications:
   metrics:
     enabled: true

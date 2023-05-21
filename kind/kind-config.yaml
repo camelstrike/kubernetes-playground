@@ -1,4 +1,3 @@
-
 # three node (two workers) cluster config
 # Kubernetes version 1.25.3
 kind: Cluster
@@ -7,42 +6,41 @@ name: kind
 networking:
   disableDefaultCNI: true
 nodes:
-- role: control-plane
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
-  - |
-    kind: ClusterConfiguration
-    # configure controller-manager bind address
-    controllerManager:
-      extraArgs:
-        bind-address: 0.0.0.0
-    # configure etcd metrics listen address
-    etcd:
-      local:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
-    # configure scheduler bind address
-    scheduler:
-      extraArgs:
-        bind-address: 0.0.0.0
-  - |
-    kind: KubeProxyConfiguration
-    # configure proxy metrics bind address
-    metricsBindAddress: 0.0.0.0
-  extraPortMappings:
-  - containerPort: 80
-    hostPort: 80
-    protocol: TCP
-  - containerPort: 443
-    hostPort: 443
-    protocol: TCP
-  image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-- role: worker
-  image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-- role: worker
-  image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+      - |
+        kind: ClusterConfiguration
+        # configure controller-manager bind address
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        # configure etcd metrics listen address
+        etcd:
+          local:
+            extraArgs:
+              listen-metrics-urls: http://0.0.0.0:2381
+        # configure scheduler bind address
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+      - |
+        kind: KubeProxyConfiguration
+        # configure proxy metrics bind address
+        metricsBindAddress: 0.0.0.0
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+    image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+  - role: worker
+    image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+  - role: worker
+    image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1

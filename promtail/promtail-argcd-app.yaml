@@ -7,14 +7,14 @@ spec:
   project: default
   destination:
     namespace: promtail
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
   sources:
-    - repoURL: 'https://grafana.github.io/helm-charts'
+    - repoURL: "https://grafana.github.io/helm-charts"
       chart: promtail
       targetRevision: 6.9.3
       helm:
         valueFiles:
-        - $values/promtail/values-promtail.yaml
-    - repoURL: 'git@github.com:camelstrike/kubernetes-playground.git'
+          - $values/promtail/values-promtail.yaml
+    - repoURL: "git@github.com:camelstrike/kubernetes-playground.git"
       targetRevision: HEAD
       ref: values

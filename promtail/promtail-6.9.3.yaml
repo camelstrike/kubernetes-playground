@@ -30,7 +30,8 @@ configmap:
   # -- If enabled, promtail config will be created as a ConfigMap instead of a secret
   enabled: false
 
-initContainer: []
+initContainer:
+  []
   # # -- Specifies whether the init container for setting inotify max user instances is to be enabled
   # - name: init
   #   # -- Docker registry, image and tag for the init container image
@@ -264,7 +265,8 @@ serviceMonitor:
 #
 # Note that the key is used as the `name` field, i.e. below will create a
 # container named `promtail-proxy`.
-extraContainers: {}
+extraContainers:
+  {}
   # promtail-proxy:
   #   image: nginx
   #   ...
@@ -304,27 +306,26 @@ extraPorts: {}
 #      #    hosts:
 #      #      - chart-example.local
 
-
 # -- PodSecurityPolicy configuration.
 # @default -- See `values.yaml`
 podSecurityPolicy:
   privileged: true
   allowPrivilegeEscalation: true
   volumes:
-    - 'secret'
-    - 'hostPath'
-    - 'downwardAPI'
+    - "secret"
+    - "hostPath"
+    - "downwardAPI"
   hostNetwork: false
   hostIPC: false
   hostPID: false
   runAsUser:
-    rule: 'RunAsAny'
+    rule: "RunAsAny"
   seLinux:
-    rule: 'RunAsAny'
+    rule: "RunAsAny"
   supplementalGroups:
-    rule: 'RunAsAny'
+    rule: "RunAsAny"
   fsGroup:
-    rule: 'RunAsAny'
+    rule: "RunAsAny"
   readOnlyRootFilesystem: true
   requiredDropCapabilities:
     - ALL
@@ -547,7 +548,8 @@ sidecar:
       enabled: true
 
 # -- Extra K8s manifests to deploy
-extraObjects: []
+extraObjects:
+  []
   # - apiVersion: "kubernetes-client.io/v1"
   #   kind: ExternalSecret
   #   metadata:
@@ -557,4 +559,3 @@ extraObjects: []
   #     data:
   #       - key: promtail-oauth2-creds
   #         name: client_secret
-

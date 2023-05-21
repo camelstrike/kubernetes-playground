@@ -5,6 +5,7 @@ Easily set up a K8S cluster locally using helm charts with observability tools r
 We overcome the chicken/egg paradigm by bootstrapping the cluster with helmfile and then provisioning the services with argocd.
 
 The script cluster-provision-helmfile.sh will:
+
 - Create a kind cluster with 3 nodes
 - Run helmfile to bootstrap the cluster with the following charts:
   - calico
@@ -15,15 +16,16 @@ The script cluster-provision-helmfile.sh will:
   - argocd-apps
 
 After bootstrapping we can manage the following charts with argocd:
-  - kube-prometheus-stack
-  - prometheus-adapter
-  - minio
-  - loki
-  - promtail
-  - chaos mesh
 
+- kube-prometheus-stack
+- prometheus-adapter
+- minio
+- loki
+- promtail
+- chaos mesh
 
 ## TODO
+
 - Add cluster bootstrap charts to argocd-apps
 - Install metallb to test loadbalancer
 - Tweak services
@@ -57,7 +59,6 @@ After bootstrapping we can manage the following charts with argocd:
 
   - Linux (/etc/hosts)
 
-
         CONTROL_PLANE_DOCKER_IP ingress.local grafana.local loki.local prometheus.local pushgateway.local alertmanager.local console.minio.local minio.local
 
         Example:
@@ -87,6 +88,7 @@ After bootstrapping we can manage the following charts with argocd:
       for node in kind-control-plane kind-worker kind-worker2; do docker unpause $node;done
 
 Access services:
+
 - https://argocd.local - admin/
 - https://grafana.local - admin/prom-operator
 - https://console.minio.local - loki/loki1234 or admin/admin123

@@ -31,10 +31,10 @@ templates:
     waitForJobs: true
     timeout: 900
     values:
-    - ./{{`{{ .Release.Name }}`}}/values-{{`{{ .Release.Name }}`}}.yaml
+      - ./{{`{{ .Release.Name }}`}}/values-{{`{{ .Release.Name }}`}}.yaml
 
 releases:
-# calico
+  # calico
   - name: calico
     namespace: tigera-operator
     chart: projectcalico/tigera-operator
@@ -52,19 +52,19 @@ releases:
             kubectl wait --for=condition=Ready node/kind-worker --timeout=300s
             kubectl wait --for=condition=Ready node/kind-worker2 --timeout=300s
     <<: *default
-# metrics-server
+  # metrics-server
   - name: metrics-server
     namespace: kube-system
     chart: metrics-server/metrics-server
     version: 3.8.4
     set:
-    - name: args
-      values:
-        - --kubelet-insecure-tls
+      - name: args
+        values:
+          - --kubelet-insecure-tls
     needs:
       - tigera-operator/calico
     <<: *default
-# cert-manager
+  # cert-manager
   - name: cert-manager
     namespace: cert-manager
     chart: jetstack/cert-manager
@@ -72,7 +72,7 @@ releases:
     needs:
       - tigera-operator/calico
     <<: *default
-# ingress-nginx
+  # ingress-nginx
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: ingress-nginx/ingress-nginx
@@ -89,7 +89,7 @@ releases:
       - kube-system/metrics-server
       - cert-manager/cert-manager
     <<: *default
-# ArgoCD
+  # ArgoCD
   - name: argocd
     namespace: argocd
     chart: argo/argo-cd
@@ -100,7 +100,7 @@ releases:
       - cert-manager/cert-manager
       - ingress-nginx/ingress-nginx
     <<: *default
-# ArgoCD Apps
+  # ArgoCD Apps
   - name: argocd-apps
     namespace: argocd
     chart: argo/argocd-apps
@@ -112,4 +112,3 @@ releases:
       - ingress-nginx/ingress-nginx
       - argocd/argocd
     <<: *default
-

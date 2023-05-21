@@ -3,20 +3,20 @@ projects:
   - name: kubernetes-playground-project
     namespace: argocd
     clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+      - group: "*"
+        kind: "*"
     destinations:
-    - namespace: '*'
-      server: https://kubernetes.default.svc
+      - namespace: "*"
+        server: https://kubernetes.default.svc
     sourceRepos:
-    - https://github.com/camelstrike/kubernetes-playground
-    - https://prometheus-community.github.io/helm-charts
-    - https://charts.min.io
-    - https://grafana.github.io/helm-charts
-    - https://charts.chaos-mesh.org
+      - https://github.com/camelstrike/kubernetes-playground
+      - https://prometheus-community.github.io/helm-charts
+      - https://charts.min.io
+      - https://grafana.github.io/helm-charts
+      - https://charts.chaos-mesh.org
 
 applications:
-# Kube Prometheus Stack
+  # Kube Prometheus Stack
   - name: kube-prometheus-stack
     namespace: argocd
     project: kubernetes-playground-project
@@ -25,25 +25,25 @@ applications:
       namespace: kube-prometheus-stack
     syncPolicy:
       syncOptions:
-      # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
-      - ServerSideApply=true
-      - CreateNamespace=true
+        # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
+        - ServerSideApply=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://prometheus-community.github.io/helm-charts
-      chart: kube-prometheus-stack
-      targetRevision: 45.7.1
-      helm:
-        valueFiles:
-        - $values/kube-prometheus-stack/values-kube-prometheus-stack.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
+      - repoURL: https://prometheus-community.github.io/helm-charts
+        chart: kube-prometheus-stack
+        targetRevision: 45.7.1
+        helm:
+          valueFiles:
+            - $values/kube-prometheus-stack/values-kube-prometheus-stack.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
     info:
-    - name: Grafana
-      value: https://grafana.local/
-    - name: Prometheus
-      value: https://prometheus.local/
-# Prometheus-Adapter
+      - name: Grafana
+        value: https://grafana.local/
+      - name: Prometheus
+        value: https://prometheus.local/
+  # Prometheus-Adapter
   - name: prometheus-adapter
     namespace: argocd
     project: kubernetes-playground-project
@@ -52,18 +52,18 @@ applications:
       namespace: prometheus-adapter
     syncPolicy:
       syncOptions:
-      - CreateNamespace=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-adapter
-      targetRevision: 4.1.1
-      helm:
-        valueFiles:
-        - $values/prometheus-adapter/values-prometheus-adapter.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
-# Minio
+      - repoURL: https://prometheus-community.github.io/helm-charts
+        chart: prometheus-adapter
+        targetRevision: 4.1.1
+        helm:
+          valueFiles:
+            - $values/prometheus-adapter/values-prometheus-adapter.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
+  # Minio
   - name: minio
     namespace: argocd
     project: kubernetes-playground-project
@@ -72,21 +72,21 @@ applications:
       namespace: minio
     syncPolicy:
       syncOptions:
-      - CreateNamespace=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://charts.min.io
-      chart: minio
-      targetRevision: 5.0.7
-      helm:
-        valueFiles:
-        - $values/minio/values-minio.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
+      - repoURL: https://charts.min.io
+        chart: minio
+        targetRevision: 5.0.7
+        helm:
+          valueFiles:
+            - $values/minio/values-minio.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
     info:
-    - name: Minio Console
-      value: https://minio.local/
-# Loki
+      - name: Minio Console
+        value: https://minio.local/
+  # Loki
   - name: loki
     namespace: argocd
     project: kubernetes-playground-project
@@ -95,18 +95,18 @@ applications:
       namespace: loki
     syncPolicy:
       syncOptions:
-      - CreateNamespace=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://grafana.github.io/helm-charts
-      chart: loki
-      targetRevision: 4.8.0
-      helm:
-        valueFiles:
-        - $values/loki/values-loki.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
-# Promtail
+      - repoURL: https://grafana.github.io/helm-charts
+        chart: loki
+        targetRevision: 4.8.0
+        helm:
+          valueFiles:
+            - $values/loki/values-loki.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
+  # Promtail
   - name: promtail
     namespace: argocd
     project: kubernetes-playground-project
@@ -115,18 +115,18 @@ applications:
       namespace: promtail
     syncPolicy:
       syncOptions:
-      - CreateNamespace=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://grafana.github.io/helm-charts
-      chart: promtail
-      targetRevision: 6.9.3
-      helm:
-        valueFiles:
-        - $values/promtail/values-promtail.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
-# Chaos Mesh
+      - repoURL: https://grafana.github.io/helm-charts
+        chart: promtail
+        targetRevision: 6.9.3
+        helm:
+          valueFiles:
+            - $values/promtail/values-promtail.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
+  # Chaos Mesh
   - name: chaos-mesh
     namespace: argocd
     project: kubernetes-playground-project
@@ -135,15 +135,15 @@ applications:
       namespace: chaos-mesh
     syncPolicy:
       syncOptions:
-      - ServerSideApply=true
-      - CreateNamespace=true
+        - ServerSideApply=true
+        - CreateNamespace=true
     sources:
-    - repoURL: https://charts.chaos-mesh.org
-      chart: chaos-mesh
-      targetRevision: 2.5.1
-      helm:
-        valueFiles:
-        - $values/chaos-mesh/values-chaos-mesh.yaml
-    - repoURL: https://github.com/camelstrike/kubernetes-playground
-      targetRevision: HEAD
-      ref: values
+      - repoURL: https://charts.chaos-mesh.org
+        chart: chaos-mesh
+        targetRevision: 2.5.1
+        helm:
+          valueFiles:
+            - $values/chaos-mesh/values-chaos-mesh.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
