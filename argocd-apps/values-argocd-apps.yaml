@@ -10,6 +10,11 @@ projects:
         server: https://kubernetes.default.svc
     sourceRepos:
       - https://github.com/camelstrike/kubernetes-playground
+      - https://kubernetes-sigs.github.io/metrics-server
+      - https://charts.jetstack.io
+      - https://kubernetes.github.io/ingress-nginx
+      - https://argoproj.github.io/argo-helm
+      - https://projectcalico.docs.tigera.io/charts
       - https://prometheus-community.github.io/helm-charts
       - https://charts.min.io
       - https://grafana.github.io/helm-charts
@@ -30,6 +35,23 @@ applications:
         helm:
           valueFiles:
             - $values/calico/values-calico.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
+  # metrics-server
+  - name: metrics-server
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: kube-system
+    sources:
+      - repoURL: https://kubernetes-sigs.github.io/metrics-server
+        chart: metrics-server
+        targetRevision: 3.10.0
+        helm:
+          valueFiles:
+            - $values/metrics-server/values-metrics-server.yaml
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values

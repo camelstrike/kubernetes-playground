@@ -56,7 +56,7 @@ releases:
   - name: metrics-server
     namespace: kube-system
     chart: metrics-server/metrics-server
-    version: 3.8.4
+    version: 3.10.0
     set:
       - name: args
         values:

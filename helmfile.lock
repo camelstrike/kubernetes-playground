@@ -14,9 +14,9 @@ dependencies:
   version: 4.5.2
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
-  version: 3.8.4
+  version: 3.10.0
 - name: tigera-operator
   repository: https://projectcalico.docs.tigera.io/charts
   version: v3.25.1
-digest: sha256:919fdafa75fd5f6d8102f89dcfa74fe5356673a34d7996027a14cb9f6c3e19e4
-generated: "2023-05-21T16:52:08.675012673+02:00"
+digest: sha256:479fe99ab7c5450bc066e018a2d0188fe0ee69191ed663e51e0d7bc6a7fc5522
+generated: "2023-05-21T17:10:29.654374224+02:00"
