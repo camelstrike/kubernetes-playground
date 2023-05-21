@@ -28,6 +28,10 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: tigera-operator
+    syncPolicy:
+      syncOptions:
+        # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
+        - ServerSideApply=true
     sources:
       - repoURL: https://projectcalico.docs.tigera.io/charts
         chart: tigera-operator
