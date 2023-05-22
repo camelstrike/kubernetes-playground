@@ -1,3 +1,11 @@
+replicas: 3
+
+tolerations:
+- effect: NoExecute
+  operator: Exists
+- effect: NoSchedule
+  operator: Exists
+
 metrics:
   enabled: true
 
