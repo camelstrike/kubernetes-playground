@@ -5,3 +5,6 @@ serviceMonitor:
   enabled: true
   additionalLabels:
     release: kube-prometheus-stack
+
+args:
+- --kubelet-insecure-tls
