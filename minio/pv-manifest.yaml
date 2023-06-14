@@ -20,22 +20,12 @@ spec:
   storageClassName: local-storage
   local:
     path: /data-minio
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - ilimit-k8s-pre-worker01
-                - ilimit-k8s-pre-worker02
-                - ilimit-k8s-pre-worker03
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: minio-pvc
-  namespace: ilimit-minio
+  namespace: minio
 spec:
   accessModes:
     - ReadWriteOnce
