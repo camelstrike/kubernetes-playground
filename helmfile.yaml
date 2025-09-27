@@ -3,8 +3,6 @@ helmDefaults:
   kubeContext: kind-kind
 
 repositories:
-  - name: projectcalico
-    url: https://projectcalico.docs.tigera.io/charts
   - name: metrics-server
     url: https://kubernetes-sigs.github.io/metrics-server
   - name: jetstack
@@ -34,39 +32,17 @@ templates:
       - ./{{`{{ .Release.Name }}`}}/values-{{`{{ .Release.Name }}`}}.yaml
 
 releases:
-  # calico
-  - name: calico
-    namespace: tigera-operator
-    chart: projectcalico/tigera-operator
-    version: v3.25.1
-    hooks:
-      - events: [presync, preapply]
-        command: ./CRDs/install-crds.sh
-      - events: [postsync]
-        showlogs: true
-        command: /bin/sh
-        args:
-          - -ec
-          - |-
-            kubectl wait --for=condition=Ready node/kind-control-plane --timeout=300s
-            kubectl wait --for=condition=Ready node/kind-worker --timeout=300s
-            kubectl wait --for=condition=Ready node/kind-worker2 --timeout=300s
-    <<: *default
   # metrics-server
   - name: metrics-server
     namespace: kube-system
     chart: metrics-server/metrics-server
     version: 3.10.0
-    needs:
-      - tigera-operator/calico
     <<: *default
   # cert-manager
   - name: cert-manager
     namespace: cert-manager
     chart: jetstack/cert-manager
     version: v1.12.0
-    needs:
-      - tigera-operator/calico
     <<: *default
   # ingress-nginx
   - name: ingress-nginx
@@ -81,7 +57,6 @@ releases:
           - -ec
           - "kubectl wait --namespace {{`{{ .Release.Namespace }}`}} --for=condition=Ready pod --selector=app.kubernetes.io/component=controller --timeout=300s"
     needs:
-      - tigera-operator/calico
       - kube-system/metrics-server
       - cert-manager/cert-manager
     <<: *default
@@ -91,7 +66,6 @@ releases:
     chart: argo/argo-cd
     version: 5.34.1
     needs:
-      - tigera-operator/calico
       - kube-system/metrics-server
       - cert-manager/cert-manager
       - ingress-nginx/ingress-nginx
@@ -102,7 +76,6 @@ releases:
     chart: argo/argocd-apps
     version: 1.2.0
     needs:
-      - tigera-operator/calico
       - kube-system/metrics-server
       - cert-manager/cert-manager
       - ingress-nginx/ingress-nginx

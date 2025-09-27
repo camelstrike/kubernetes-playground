@@ -14,34 +14,13 @@ projects:
       - https://charts.jetstack.io
       - https://kubernetes.github.io/ingress-nginx
       - https://argoproj.github.io/argo-helm
-      - https://projectcalico.docs.tigera.io/charts
       - https://prometheus-community.github.io/helm-charts
       - https://charts.min.io
       - https://grafana.github.io/helm-charts
       - https://charts.chaos-mesh.org
+      - https://charts.external-secrets.io
 
 applications:
-  # Calico
-  - name: calico
-    namespace: argocd
-    project: kubernetes-playground-project
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: tigera-operator
-    syncPolicy:
-      syncOptions:
-        # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
-        - ServerSideApply=true
-    sources:
-      - repoURL: https://projectcalico.docs.tigera.io/charts
-        chart: tigera-operator
-        targetRevision: v3.25.1
-        helm:
-          valueFiles:
-            - $values/calico/values-calico.yaml
-      - repoURL: https://github.com/camelstrike/kubernetes-playground
-        targetRevision: HEAD
-        ref: values
   # metrics-server
   - name: metrics-server
     namespace: argocd
@@ -49,6 +28,8 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: kube-system
+    syncPolicy:
+      automated: {}
     sources:
       - repoURL: https://kubernetes-sigs.github.io/metrics-server
         chart: metrics-server
@@ -59,6 +40,7 @@ applications:
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values
+
   # cert-manager
   - name: cert-manager
     namespace: argocd
@@ -66,6 +48,8 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: cert-manager
+    syncPolicy:
+      automated: {}
     sources:
       - repoURL: https://charts.jetstack.io
         chart: cert-manager
@@ -76,6 +60,7 @@ applications:
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values
+
   # ingress-nginx
   - name: ingress-nginx
     namespace: argocd
@@ -83,6 +68,8 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: ingress-nginx
+    syncPolicy:
+      automated: {}
     sources:
       - repoURL: https://kubernetes.github.io/ingress-nginx
         chart: ingress-nginx
@@ -93,6 +80,7 @@ applications:
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values
+
   # ArgoCD
   - name: argocd
     namespace: argocd
@@ -100,6 +88,8 @@ applications:
     destination:
       server: https://kubernetes.default.svc
       namespace: argocd
+    syncPolicy:
+      automated: {}
     sources:
       - repoURL: https://argoproj.github.io/argo-helm
         chart: argo-cd
@@ -110,6 +100,7 @@ applications:
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values
+
   # Kube Prometheus Stack
   - name: kube-prometheus-stack
     namespace: argocd
@@ -122,6 +113,7 @@ applications:
         # See https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
         - ServerSideApply=true
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://prometheus-community.github.io/helm-charts
         chart: kube-prometheus-stack
@@ -147,6 +139,7 @@ applications:
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://prometheus-community.github.io/helm-charts
         chart: prometheus-adapter
@@ -167,6 +160,7 @@ applications:
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://charts.min.io
         chart: minio
@@ -190,6 +184,7 @@ applications:
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://grafana.github.io/helm-charts
         chart: loki
@@ -210,6 +205,7 @@ applications:
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://grafana.github.io/helm-charts
         chart: promtail
@@ -231,6 +227,7 @@ applications:
       syncOptions:
         - ServerSideApply=true
         - CreateNamespace=true
+      automated: {}
     sources:
       - repoURL: https://charts.chaos-mesh.org
         chart: chaos-mesh
@@ -238,6 +235,28 @@ applications:
         helm:
           valueFiles:
             - $values/chaos-mesh/values-chaos-mesh.yaml
+      - repoURL: https://github.com/camelstrike/kubernetes-playground
+        targetRevision: HEAD
+        ref: values
+  # External Secrets
+  - name: external-secrets
+    namespace: argocd
+    project: kubernetes-playground-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: external-secrets
+    syncPolicy:
+      syncOptions:
+        - ServerSideApply=true
+        - CreateNamespace=true
+      automated: {}
+    sources:
+      - repoURL: https://charts.external-secrets.io
+        chart: external-secrets
+        targetRevision: 0.14.3
+        helm:
+          valueFiles:
+            - $values/external-secrets/values-external-secrets.yaml
       - repoURL: https://github.com/camelstrike/kubernetes-playground
         targetRevision: HEAD
         ref: values

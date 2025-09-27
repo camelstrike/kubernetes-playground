@@ -1,0 +1,29 @@
+---
+apiVersion: v2
+name: lgtm-distributed
+description: Umbrella chart for a distributed Loki, Grafana, Tempo and Mimir stack
+type: application
+version: 2.1.0
+appVersion: "^7.3.9"
+
+dependencies:
+  - name: grafana
+    alias: grafana
+    condition: grafana.enabled
+    repository: https://grafana.github.io/helm-charts
+  - name: loki-distributed
+    alias: loki
+    condition: loki.enabled
+    repository: "https://grafana.github.io/helm-charts"
+  - name: mimir-distributed
+    alias: mimir
+    condition: mimir.enabled
+    repository: "https://grafana.github.io/helm-charts"
+  - name: tempo-distributed
+    alias: tempo
+    condition: tempo.enabled
+    repository: "https://grafana.github.io/helm-charts"
+  - name: oncall
+    alias: grafana-oncall
+    condition: grafana-oncall.enabled
+    repository: "https://grafana.github.io/helm-charts"

@@ -22,6 +22,7 @@ if [[ $(kind get clusters) == "kind" ]]; then
 else
 	echo "Cluster doesnt exist, creating..."
 	kind create cluster --config "${PWD}"/kind/kind-config.yaml --kubeconfig ~/.kube/config
+  ./CRDs/install-crds.sh
 fi
 
 # Bootstrap kind cluster with helmfile
